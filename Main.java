@@ -23,6 +23,15 @@ public class Main {
 
         Multi_Linear_Regression mReg_model = new Multi_Linear_Regression(Arrays.copyOfRange(data_2, 0, 3), data_2[3]);
         mReg_model.dbg();
+
+        double[][]fake_weights = {
+            {0.1},
+            {0.2},
+            {0.3},
+            {0.4}
+        };
+
+        mReg_model.predict(fake_weights);
         
     }
 

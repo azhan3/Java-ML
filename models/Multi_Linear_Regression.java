@@ -51,7 +51,29 @@ public class Multi_Linear_Regression {
         }
     
         return newMatrix;
+    }   
+
+    public double[][] predict(double[][] w) {
+        return matrixMultiplication(this.X_mat, w);
     }
+
+    public static double[][] matrixMultiplication(double[][] A, double[][] B) throws IllegalArgumentException {
+        if (A[0].length != B.length) {
+            throw new IllegalArgumentException("Invalid dimensions for matrix multiplication.");
+        }
+        int n = A.length, m = B[0].length, p = B.length;
+        double[][] C = new double[n][m];
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                for (int k = 0; k < p; k++) {
+                    C[i][j] += A[i][k] * B[k][j];
+                }
+            }
+        }
+        for (double[]i : C) System.out.println(Arrays.toString(i));
+        return C;
+    }
+    
     
 
     public void dbg() {
