@@ -31,7 +31,19 @@ public class Main {
             {0.4}
         };
 
-        mReg_model.predict(fake_weights);
+        //mReg_model.predict(fake_weights);
+
+        System.out.println("Test Loss => " + mReg_model.loss(fake_weights));
+
+        double[][]x=mReg_model.gradient(fake_weights);
+        for (double[]i : x) System.out.println(Arrays.toString(i));
+        double[][]w = mReg_model.train(250000, 0.0001);
+
+        System.out.println("Weights => [");
+        for (double[] i : w) System.out.println(Arrays.toString(i));
+        System.out.println("]");
+
+        System.out.println("Loss => " + mReg_model.loss(w));
         
     }
 

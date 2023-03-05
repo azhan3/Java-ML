@@ -3,7 +3,7 @@ package models;
 import java.util.Arrays;
 
 public class Multi_Linear_Regression {
-    double[][] x, y, Y_mat, X_mat;
+    double[][] Y_mat, X_mat;
     int r, c;
 
     public Multi_Linear_Regression(double[][] x, double[] y) {
@@ -70,11 +70,46 @@ public class Multi_Linear_Regression {
                 }
             }
         }
-        for (double[]i : C) System.out.println(Arrays.toString(i));
+        
         return C;
     }
     
+    public double loss(double[][] w) {
+        double loss = 0;
+        double[][] predictions = predict(w);
+        for (int i = 0 ; i < this.r ; ++i) {
+            loss += (predictions[i][0] - this.Y_mat[i][0]) * (predictions[i][0] - this.Y_mat[i][0]);
+        }
+        return loss / this.r;
+    }
     
+    public double[][] gradient(double[][] w) {
+        double[][]XT = transpose(this.X_mat);
+        double[][] predictions = predict(w);
+        for (int i = 0 ; i < this.r ; ++i) {
+            predictions[i][0] -= this.Y_mat[i][0];
+        }
+        double[][] newMat = matrixMultiplication(XT, predictions);
+        for (int i = 0 ; i < newMat.length ; ++i) {
+            newMat[i][0] /= this.r / 2;
+        }
+        return newMat;
+    }
+
+    public double[][] train(int itr, double lr) {
+        double[][] w = new double[this.c + 1][1];
+        for (double[] row: w) {
+            Arrays.fill(row, 0.0);
+        }
+        for (int i = 0 ; i < itr ; ++i) {
+            double[][] grad = gradient(w);
+            for (int j = 0 ; j < w.length ; ++j) {
+                w[j][0] -= grad[j][0] * lr;
+            }
+        }
+        
+        return w;
+    }
 
     public void dbg() {
         for (int i = 0 ; i < this.r; ++i) {
